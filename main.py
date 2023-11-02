@@ -17,7 +17,7 @@ clock = pygame.time.Clock()
 timer_event = pygame.USEREVENT+1
 pygame.time.set_timer(timer_event, 1000)
 time = 0
-speed = 15
+speed = 5 #15
 
 #Score
 score = 0
@@ -81,8 +81,11 @@ while True:
 
     #show pieces & how they move (from class)
     if piece.can_move == False:
+        #grid: old grid that stores what the board looks like before the new piece is added
+        #show_grid: new grid that shows the new piece moving on top of the old grid
         piece.tetromino_z()
         piece.can_move = True
+    piece.movement(grid)
     piece.timed_mov(grid, time)
     piece.borders(grid)
     piece.update(grid)
