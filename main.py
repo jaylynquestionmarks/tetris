@@ -7,7 +7,7 @@
 import pygame
 from random import *
 pygame.init()
-from tetrominoes import Tetromino
+from tetrominoes import Tetromino, Tetromino_z
 
 #Screen
 screen = pygame.display.set_mode((1920,1080))
@@ -49,7 +49,19 @@ grid = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]
 
-piece = Tetromino()
+#set random piece
+#generally use clock tick as seed to generate random number(except in security)
+def random_piece():
+    #pick random
+    r = randrange(1,6)
+    if r == 1:
+        print("generated Z piece")
+        return Tetromino_z()
+    else:
+        return Tetromino_z()
+
+#set piece to random piece
+piece = random_piece()
 
 while True:
     screen.fill('black')
@@ -75,7 +87,6 @@ while True:
                             rect = pygame.Rect(50*j, 50*i, 48, 48)
                             pygame.draw.rect(screen, 'white', rect)  #i forgot how color works ._.
                         j += 1
-
                 i += 1
                 #??
 

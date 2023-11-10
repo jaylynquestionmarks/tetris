@@ -43,6 +43,11 @@ class Tetromino():
                     self.block3_column -= 1
                     self.block4_column -= 1
 
+    #works but having abstract class(ABC) would catch bugs and typos
+    #Multiple Inheritance is generally complicated and :(, stick to single inheritance
+    def rotate():
+        pass
+
         if keys[pygame.K_RIGHT]:
             #border: right edge logic (in if)
             if self.block1_column != 9 and self.block2_column != 9 and self.block3_column != 9 and self.block4_column != 9:
@@ -58,37 +63,6 @@ class Tetromino():
                     self.block3_column += 1
                     self.block4_column += 1
 
-        #for i & j 0-->1
-        #rotate
-        if keys[pygame.K_r]:
-            # clear the previous position
-            grid[self.block1_row][self.block1_column] = 0
-            grid[self.block2_row][self.block2_column] = 0
-            grid[self.block3_row][self.block3_column] = 0
-            grid[self.block4_row][self.block4_column] = 0
-            #rotate
-            if self.rotation_num == 0:
-                self.block1_row -= 1
-                self.block1_column += 1
-                self.block3_row -= 1
-                self.block3_column -= 1
-                self.block4_column -= 2
-                self.rotation_num += 1
-            elif self.rotation_num == 1:
-                self.block1_row += 1
-                self.block1_column -= 1
-                self.block3_row += 1
-                self.block3_column += 1
-                self.block4_column += 2
-                self.rotation_num = 0
-        #tetromino_5
-        #tetromino_J
-        #tetromino_L
-        #tetromino_T
-        #tetromino_|
-        #tetromino_□
-        # from tetrominoes choose random(0-6)
-        #random.choice(tetrominoes_list)
 
     def borders(self, grid):
         if self.block1_row == 18 or self.block2_row == 18 or self.block3_row == 18 or self.block4_row == 18:
@@ -144,10 +118,9 @@ class Tetromino():
             #print("move", max(self.block2_row, self.block3_row))
         #clear
 
-class tetromino_z(Tetromino)():
-   #im going to forget to pass in grid
-    #make the tetrominoes subclasses
-    def tetromino_z(self):
+class Tetromino_z(Tetromino):
+    def __init__(self):
+        super(Tetromino_z, self).__init__()
         #appear in grid[0][3], grid[0][4], grid[1][4], and grid[1][5]?
         self.block1_row = 0
         self.block1_column = 3
@@ -157,3 +130,38 @@ class tetromino_z(Tetromino)():
         self.block3_column = 4
         self.block4_row = 1
         self.block4_column = 5
+   #im going to forget to pass in grid
+    #make the tetrominoes subclasses
+    
+    #whichever block it is it will call that rotate
+    def rotate():
+        #rotate
+        if keys[pygame.K_r]:
+            # clear the previous position
+            grid[self.block1_row][self.block1_column] = 0
+            grid[self.block2_row][self.block2_column] = 0
+            grid[self.block3_row][self.block3_column] = 0
+            grid[self.block4_row][self.block4_column] = 0
+            #rotate
+            if self.rotation_num == 0:
+                self.block1_row -= 1
+                self.block1_column += 1
+                self.block3_row -= 1
+                self.block3_column -= 1
+                self.block4_column -= 2
+                self.rotation_num += 1
+            elif self.rotation_num == 1:
+                self.block1_row += 1
+                self.block1_column -= 1
+                self.block3_row += 1
+                self.block3_column += 1
+                self.block4_column += 2
+                self.rotation_num = 0
+        #tetromino_5
+        #tetromino_J
+        #tetromino_L
+        #tetromino_T
+        #tetromino_|
+        #tetromino_□
+        # from tetrominoes choose random(0-6)
+        #random.choice(tetrominoes_list)
