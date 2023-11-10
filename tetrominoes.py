@@ -23,18 +23,6 @@ class Tetromino():
         grid[self.block3_row][self.block3_column] = 1
         grid[self.block4_row][self.block4_column] = 1
 
-    #im going to forget to pass in grid
-    def tetromino_z(self):
-        #appear in grid[0][3], grid[0][4], grid[1][4], and grid[1][5]?
-        self.block1_row = 0
-        self.block1_column = 3
-        self.block2_row = 0
-        self.block2_column = 4
-        self.block3_row = 1
-        self.block3_column = 4
-        self.block4_row = 1
-        self.block4_column = 5
-
     def movement(self, grid):
         keys = pygame.key.get_pressed()
         if keys[pygame.K_LEFT]:
@@ -155,3 +143,17 @@ class Tetromino():
             self.block4_row += 1
             #print("move", max(self.block2_row, self.block3_row))
         #clear
+
+class tetromino_z(Tetromino)():
+   #im going to forget to pass in grid
+    #make the tetrominoes subclasses
+    def tetromino_z(self):
+        #appear in grid[0][3], grid[0][4], grid[1][4], and grid[1][5]?
+        self.block1_row = 0
+        self.block1_column = 3
+        self.block2_row = 0
+        self.block2_column = 4
+        self.block3_row = 1
+        self.block3_column = 4
+        self.block4_row = 1
+        self.block4_column = 5
