@@ -3,9 +3,10 @@
 #points: single = 100, double = 300, triple = 500, tetris(4?) = 800
 #ghost piece (opt. and later.)
 
-
+#to-do: clear + make the other pieces
 import pygame
 from random import *
+import copy
 pygame.init()
 from tetrominoes import Tetromino, Tetromino_z
 
@@ -22,13 +23,33 @@ speed = 5 #15
 #Score
 score = 0
 font = pygame.font.SysFont('chalkduster.ttf', 100)
-score_text = font.render('SCORE: ' + str(score), True, "white")
 cleared = 0
 add_points = 0
 
 # 10x20 grid
 #1 means activated (not just indicating where to draw)
-grid = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+old_grid = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]
+
+show_grid = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -66,7 +87,12 @@ piece = random_piece()
 while True:
     screen.fill('black')
     clock.tick(speed)
-    screen.blit(score_text, (1550, 50))
+    #score text
+    score_text = font.render('SCORE: ' + str(score), True, "white")
+    screen.blit(score_text, (1500, 50))
+
+    if clock.get_time() == 100:
+        print("time = 100")
 
     for event in pygame.event.get():
         if event.type == timer_event:
@@ -75,10 +101,10 @@ while True:
         if event.type == pygame.QUIT:
             exit()
 
-        def draw_grid(screen):
+        def draw_grid(screen, show_grid):
             i = 0
             j = 0
-            for row in grid:
+            for row in show_grid:
                 #print(row)
                 j = 0
                 for block in row:
@@ -90,21 +116,46 @@ while True:
                 i += 1
                 #??
 
+        #what is old grid\
+        def draw_old_grid(screen, old_grid):
+            i = 0
+            j = 0
+            for row in old_grid:
+                #print(row)
+                j = 0
+                for block in row:
+                        #print(block)
+                        if block == 1:
+                            rect = pygame.Rect(50*j, 50*i, 49, 49)
+                            pygame.draw.rect(screen, 'red', rect)  #i forgot how color works ._.
+                        j += 1
+                i += 1
+
     #show pieces & how they move (from class)
-    if piece.can_move == False:
+    if piece.can_move == False and clock.get_time() > 100:
+        print("piece stop moving")
         #grid: old grid that stores what the board looks like before the new piece is added
         #show_grid: new grid that shows the new piece moving on top of the old grid
-        piece.tetromino_z()
+        old_grid = copy.deepcopy(show_grid)
+        print("new piece")
+        piece = random_piece()
         piece.can_move = True
-    piece.movement(grid)
-    piece.timed_mov(grid, time)
-    piece.borders(grid)
-    piece.update(grid)
+        piece.rotation_num = 0
+    piece.movement(old_grid, show_grid)
+    piece.rotate(show_grid)
+    piece.borders(old_grid, show_grid)
+    piece.timed_mov(show_grid, time)
+    show_grid = piece.update(show_grid)
 
     #Scoring
     #clear row
-    for row in grid:
+    #score goes up infinitely
+    for row in show_grid:
+        if row == [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]:
+            if show_grid.index(row) > 0:
+                row = copy.deepcopy(show_grid[show_grid.index(row) - 1])
         if row == [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]:
+            row = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
             cleared +=1
             if cleared > 1:
                 add_points = 200
@@ -113,10 +164,19 @@ while True:
             score += 100 + add_points
     cleared = 0
 
+    #game over
+    for row in old_grid:
+        if old_grid.index(row) == 0 and row !=[0, 0, 0, 0, 0, 0, 0, 0, 0, 0]:
+            # lose text
+            game_over_text = font.render("GAME OVER  FINAL SCORE: " + str(score), True, "red")
+            screen.blit(game_over_text, (0, 0))
+
     if score % 1500:
         speed += 2
 
-    draw_grid(screen)
+#draw the grids..
+    draw_grid(screen, show_grid)
+    draw_old_grid(screen, old_grid)
     pygame.display.update()
 #generate random block in center top of screen
 

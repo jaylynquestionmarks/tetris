@@ -1,9 +1,8 @@
 import pygame
 
 class Tetromino():
-    #does class mean that the code runs for everything in this class
     def __init__(self):
-        self.can_move = False
+        self.can_move = True
         #hhhhhhhhhhhhhhhhh
         self.rotation_num = 0
         #each tetromino is 4 blocks
@@ -17,46 +16,45 @@ class Tetromino():
         self.block4_column = 0
 
     #i have no idea what im doing
-    def update(self, grid):
-        grid[self.block1_row][self.block1_column] = 1
-        grid[self.block2_row][self.block2_column] = 1
-        grid[self.block3_row][self.block3_column] = 1
-        grid[self.block4_row][self.block4_column] = 1
+    def update(self, show_grid):
+        show_grid[self.block1_row][self.block1_column] = 1
+        show_grid[self.block2_row][self.block2_column] = 1
+        show_grid[self.block3_row][self.block3_column] = 1
+        show_grid[self.block4_row][self.block4_column] = 1
+        return show_grid
 
-    def movement(self, grid):
+    def movement(self, old_grid, show_grid):
         keys = pygame.key.get_pressed()
         if keys[pygame.K_LEFT]:
             # left edge
             if self.block1_column != 0 and self.block2_column != 0 and self.block3_column != 0 and self.block4_column != 0:
                 #collision
-                if min(self.block1_column, self.block2_column, self.block3_column, self.block4_column)-1 != 1:
+                if old_grid[self.block1_row][self.block1_column-1] != 1 and old_grid[self.block2_row][self.block2_column-1] != 1 and old_grid[self.block3_row][self.block3_column-1] != 1 and old_grid[self.block4_row][self.block4_column-1] != 1:
                     #print columns every time you move left
                     print(self.block1_column, self.block2_column, self.block3_column, self.block4_column)
                     #clear the previous position
-                    grid[self.block1_row][self.block1_column] = 0
-                    grid[self.block2_row][self.block2_column] = 0
-                    grid[self.block3_row][self.block3_column] = 0
-                    grid[self.block4_row][self.block4_column] = 0
-                    # move
+                    show_grid[self.block1_row][self.block1_column] = 0
+                    show_grid[self.block2_row][self.block2_column] = 0
+                    show_grid[self.block3_row][self.block3_column] = 0
+                    show_grid[self.block4_row][self.block4_column] = 0
+                    #move
                     self.block1_column -= 1
                     self.block2_column -= 1
                     self.block3_column -= 1
                     self.block4_column -= 1
 
-    #works but having abstract class(ABC) would catch bugs and typos
-    #Multiple Inheritance is generally complicated and :(, stick to single inheritance
-    def rotate():
-        pass
 
-        if keys[pygame.K_RIGHT]:
+        elif keys[pygame.K_RIGHT]:
             #border: right edge logic (in if)
             if self.block1_column != 9 and self.block2_column != 9 and self.block3_column != 9 and self.block4_column != 9:
-                if max(self.block1_column, self.block2_column, self.block3_column, self.block4_column) + 1 != 1:
+                print("right1")
+                if old_grid[self.block1_row][self.block1_column+1] != 1 and old_grid[self.block2_row][self.block2_column+1] != 1 and old_grid[self.block3_row][self.block3_column+1] != 1 and old_grid[self.block4_row][self.block4_column+1] != 1:
                     # clear the previous position
-                    grid[self.block1_row][self.block1_column] = 0
-                    grid[self.block2_row][self.block2_column] = 0
-                    grid[self.block3_row][self.block3_column] = 0
-                    grid[self.block4_row][self.block4_column] = 0
+                    print("right2")
+                    show_grid[self.block1_row][self.block1_column] = 0
+                    show_grid[self.block2_row][self.block2_column] = 0
+                    show_grid[self.block3_row][self.block3_column] = 0
+                    show_grid[self.block4_row][self.block4_column] = 0
                     # move
                     self.block1_column += 1
                     self.block2_column += 1
@@ -64,52 +62,29 @@ class Tetromino():
                     self.block4_column += 1
 
 
-    def borders(self, grid):
+    #works but having abstract class(ABC) would catch bugs and typos
+    #Multiple Inheritance is generally complicated and :(, stick to single inheritance
+    def rotate(self):
+        pass
+
+    def borders(self, old_grid, show_grid):
         if self.block1_row == 18 or self.block2_row == 18 or self.block3_row == 18 or self.block4_row == 18:
             self.can_move = False
             print(self.can_move)
 
         # stack
         # 12 13 14 23 24 34
-        if self.block1_column == self.block2_column:
-            if grid[max(self.block1_row, self.block2_row) + 1][self.block1_column] == 1 or \
-                    grid[self.block3_row + 1][self.block3_column] == 1 or grid[self.block4_row + 1][
-                self.block4_column] == 1:
-                self.can_move = False
-        if self.block1_column == self.block3_column:
-            if grid[max(self.block1_row, self.block3_row) + 1][self.block1_column] == 1 or \
-                    grid[self.block2_row + 1][self.block2_column] == 1 or grid[self.block4_row + 1][
-                self.block4_column] == 1:
-                self.can_move = False
-        if self.block1_column == self.block4_column:
-            if grid[max(self.block1_row, self.block4_row) + 1][self.block1_column] == 1 or \
-                    grid[self.block2_row + 1][self.block2_column] == 1 or grid[self.block3_row + 1][
-                self.block3_column] == 1:
-                self.can_move = False
-        if self.block2_column == self.block3_column:
-            if grid[max(self.block2_row, self.block3_row) + 1][self.block2_column] == 1 or \
-                    grid[self.block1_row + 1][self.block1_column] == 1 or grid[self.block4_row + 1][
-                self.block4_column] == 1:
-                self.can_move = False
-                #print("detect", max(self.block2_row, self.block3_row))
-        if self.block2_column == self.block4_column:
-            if grid[max(self.block2_row, self.block4_row) + 1][self.block2_column] == 1 or \
-                    grid[self.block1_row + 1][self.block1_column] == 1 or grid[self.block3_row + 1][
-                self.block3_column] == 1:
-                self.can_move = False
-        if self.block3_column == self.block4_column:
-            if grid[max(self.block3_row, self.block4_row) + 1][self.block1_column] == 1 or \
-                    grid[self.block1_row + 1][self.block3_column] == 1 or grid[self.block2_row + 1][
-                self.block2_column] == 1:
-                self.can_move = False
+        #list index out of range
+        if old_grid[self.block1_row+1][self.block1_column] == 1 or old_grid[self.block2_row+1][self.block2_column] == 1 or old_grid[self.block3_row+1][self.block3_column] == 1 or old_grid[self.block4_row+1][self.block4_column] == 1:
+            self.can_move = False
 
-    def timed_mov(self, grid, time):
+    def timed_mov(self, show_grid, time):
         if time % 2 == 0 and self.can_move == True:
             #clear the previous position
-            grid[self.block1_row][self.block1_column] = 0
-            grid[self.block2_row][self.block2_column] = 0
-            grid[self.block3_row][self.block3_column] = 0
-            grid[self.block4_row][self.block4_column] = 0
+            show_grid[self.block1_row][self.block1_column] = 0
+            show_grid[self.block2_row][self.block2_column] = 0
+            show_grid[self.block3_row][self.block3_column] = 0
+            show_grid[self.block4_row][self.block4_column] = 0
             #move down a row
             self.block1_row += 1
             self.block2_row += 1
@@ -134,14 +109,15 @@ class Tetromino_z(Tetromino):
     #make the tetrominoes subclasses
     
     #whichever block it is it will call that rotate
-    def rotate():
+    def rotate(self, show_grid):
+        keys = pygame.key.get_pressed()
         #rotate
         if keys[pygame.K_r]:
             # clear the previous position
-            grid[self.block1_row][self.block1_column] = 0
-            grid[self.block2_row][self.block2_column] = 0
-            grid[self.block3_row][self.block3_column] = 0
-            grid[self.block4_row][self.block4_column] = 0
+            show_grid[self.block1_row][self.block1_column] = 0
+            show_grid[self.block2_row][self.block2_column] = 0
+            show_grid[self.block3_row][self.block3_column] = 0
+            show_grid[self.block4_row][self.block4_column] = 0
             #rotate
             if self.rotation_num == 0:
                 self.block1_row -= 1
@@ -149,7 +125,8 @@ class Tetromino_z(Tetromino):
                 self.block3_row -= 1
                 self.block3_column -= 1
                 self.block4_column -= 2
-                self.rotation_num += 1
+                self.rotation_num = 1
+                #print("rotate1")
             elif self.rotation_num == 1:
                 self.block1_row += 1
                 self.block1_column -= 1
@@ -157,6 +134,7 @@ class Tetromino_z(Tetromino):
                 self.block3_column += 1
                 self.block4_column += 2
                 self.rotation_num = 0
+                #print("rotate2")
         #tetromino_5
         #tetromino_J
         #tetromino_L
