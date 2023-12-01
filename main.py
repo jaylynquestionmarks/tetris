@@ -47,7 +47,7 @@ old_grid = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]
+        [1, 1, 1, 1, 1, 1, 1, 1, 0, 0]]
 
 show_grid = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -69,6 +69,38 @@ show_grid = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]
+
+#draw_grids
+def draw_grid(screen, show_grid):
+    i = 0
+    j = 0
+    for row in show_grid:
+        # print(row)
+        j = 0
+        for block in row:
+            # print(block)
+            if block == 1:
+                rect = pygame.Rect(50 * j, 50 * i, 48, 48)
+                pygame.draw.rect(screen, 'white', rect)  # i forgot how color works ._.
+            j += 1
+        i += 1
+        # ??
+
+
+# what is old grid\
+def draw_old_grid(screen, old_grid):
+    i = 0
+    j = 0
+    for row in old_grid:
+        # print(row)
+        j = 0
+        for block in row:
+            # print(block)
+            if block == 1:
+                rect = pygame.Rect(50 * j, 50 * i, 49, 49)
+                pygame.draw.rect(screen, 'red', rect)  # i forgot how color works ._.
+            j += 1
+        i += 1
 
 #set random piece
 #generally use clock tick as seed to generate random number(except in security)
@@ -101,38 +133,9 @@ while True:
         if event.type == pygame.QUIT:
             exit()
 
-        def draw_grid(screen, show_grid):
-            i = 0
-            j = 0
-            for row in show_grid:
-                #print(row)
-                j = 0
-                for block in row:
-                        #print(block)
-                        if block == 1:
-                            rect = pygame.Rect(50*j, 50*i, 48, 48)
-                            pygame.draw.rect(screen, 'white', rect)  #i forgot how color works ._.
-                        j += 1
-                i += 1
-                #??
-
-        #what is old grid\
-        def draw_old_grid(screen, old_grid):
-            i = 0
-            j = 0
-            for row in old_grid:
-                #print(row)
-                j = 0
-                for block in row:
-                        #print(block)
-                        if block == 1:
-                            rect = pygame.Rect(50*j, 50*i, 49, 49)
-                            pygame.draw.rect(screen, 'red', rect)  #i forgot how color works ._.
-                        j += 1
-                i += 1
 
     #show pieces & how they move (from class)
-    if piece.can_move == False and clock.get_time() > 100:
+    if piece.can_move == False: #and clock.get_time() > 100:
         print("piece stop moving")
         #grid: old grid that stores what the board looks like before the new piece is added
         #show_grid: new grid that shows the new piece moving on top of the old grid
@@ -150,18 +153,23 @@ while True:
     #Scoring
     #clear row
     #score goes up infinitely
-    for row in show_grid:
-        if row == [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]:
-            if show_grid.index(row) > 0:
-                row = copy.deepcopy(show_grid[show_grid.index(row) - 1])
+    for index, row in enumerate(old_grid):
+        print("row: " + str(index) + str(row))
         if row == [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]:
-            row = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
             cleared +=1
+            print(cleared)
+            del old_grid[index]
+            for i, row in enumerate(old_grid):
+                if i > index:
+                    #copy.deepcopy
+                    old_grid[i] = old_grid[i - 1]
+            old_grid[0] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
             if cleared > 1:
                 add_points = 200
             if cleared > 3:
                 add_points = 300
-            score += 100 + add_points
+            #score += 100 + add_points
     cleared = 0
 
     #game over

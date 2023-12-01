@@ -68,7 +68,7 @@ class Tetromino():
         pass
 
     def borders(self, old_grid, show_grid):
-        if self.block1_row == 18 or self.block2_row == 18 or self.block3_row == 18 or self.block4_row == 18:
+        if self.block1_row > 18 or self.block2_row > 18 or self.block3_row > 18 or self.block4_row > 18:
             self.can_move = False
             print(self.can_move)
 
