@@ -68,14 +68,13 @@ class Tetromino():
         pass
 
     def borders(self, old_grid, show_grid):
-        if self.block1_row > 18 or self.block2_row > 18 or self.block3_row > 18 or self.block4_row > 18:
+        #list index out of range
+        if self.block1_row == 19 or self.block2_row == 19 or self.block3_row == 19 or self.block4_row == 19:
             self.can_move = False
             print(self.can_move)
-
         # stack
         # 12 13 14 23 24 34
-        #list index out of range
-        if old_grid[self.block1_row+1][self.block1_column] == 1 or old_grid[self.block2_row+1][self.block2_column] == 1 or old_grid[self.block3_row+1][self.block3_column] == 1 or old_grid[self.block4_row+1][self.block4_column] == 1:
+        elif old_grid[self.block1_row+1][self.block1_column] == 1 or old_grid[self.block2_row+1][self.block2_column] == 1 or old_grid[self.block3_row+1][self.block3_column] == 1 or old_grid[self.block4_row+1][self.block4_column] == 1:
             self.can_move = False
 
     def timed_mov(self, show_grid, time):
@@ -135,7 +134,14 @@ class Tetromino_z(Tetromino):
                 self.block4_column += 2
                 self.rotation_num = 0
                 #print("rotate2")
-
+        #tetromino_5
+        #tetromino_J
+        #tetromino_L
+        #tetromino_T
+        #tetromino_|
+        #tetromino_□
+        # from tetrominoes choose random(0-6)
+        #random.choice(tetrominoes_list)
            
 #tetromino_S
 #appear in grid[1][3], grid[1][4], grid[0][4], and grid[0][5] 
