@@ -3,6 +3,8 @@
 #points: single = 100, double = 300, triple = 500, tetris(4?) = 800
 #ghost piece (opt. and later.)
 
+#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
+
 #to-do: clear + make the other pieces
 import pygame
 from random import *
@@ -18,7 +20,7 @@ clock = pygame.time.Clock()
 timer_event = pygame.USEREVENT+1
 pygame.time.set_timer(timer_event, 1000)
 time = 0
-speed = 5 #15
+speed = 8
 
 #Score
 score = 0
@@ -68,7 +70,7 @@ show_grid = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]]
+        [1, 1, 1, 1, 1, 1, 1, 1, 0, 0]]
 
 #draw_grids
 def draw_grid(screen, show_grid):
@@ -140,37 +142,42 @@ while True:
         #grid: old grid that stores what the board looks like before the new piece is added
         #show_grid: new grid that shows the new piece moving on top of the old grid
         old_grid = copy.deepcopy(show_grid)
+        #generate new piece + set stuff
         print("new piece")
         piece = random_piece()
         piece.can_move = True
         piece.rotation_num = 0
+
+        #Scoring
+        #clear row
+        #score goes up infinitely
+        for index, row in enumerate(old_grid):
+            print("row: " + str(index) + str(row))
+            if row == [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]:
+                cleared +=1
+                print("score:", cleared)
+                del old_grid[index]
+                for i, row in enumerate(old_grid):
+                    print("row", i, index)
+                    if i < index and i != 0:
+                        print("move down")
+                        old_grid[i] = copy.deepcopy(old_grid[i - 1])
+                old_grid[0] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+
+                if cleared > 1:
+                    add_points = 200
+                if cleared > 3:
+                    add_points = 300
+                #score += 100 + add_points
+        cleared = 0
+        show_grid = copy.deepcopy(old_grid)
+
     piece.movement(old_grid, show_grid)
     piece.rotate(show_grid)
     piece.borders(old_grid, show_grid)
     piece.timed_mov(show_grid, time)
     show_grid = piece.update(show_grid)
 
-    #Scoring
-    #clear row
-    #score goes up infinitely
-    for index, row in enumerate(old_grid):
-        print("row: " + str(index) + str(row))
-        if row == [1, 1, 1, 1, 1, 1, 1, 1, 1, 1]:
-            cleared +=1
-            print(cleared)
-            del old_grid[index]
-            for i, row in enumerate(old_grid):
-                if i > index:
-                    #copy.deepcopy
-                    old_grid[i] = old_grid[i - 1]
-            old_grid[0] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-
-            if cleared > 1:
-                add_points = 200
-            if cleared > 3:
-                add_points = 300
-            #score += 100 + add_points
-    cleared = 0
 
     #game over
     for row in old_grid:
