@@ -154,6 +154,7 @@ while True:
         piece.can_move = True
         piece.rotation_num = 0
 
+
         #Clear row + Scoring
         #for index, row in enumerate(old_grid):
         for index in range(len(old_grid)):

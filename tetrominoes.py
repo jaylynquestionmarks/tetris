@@ -142,3 +142,82 @@ class Tetromino_z(Tetromino):
         #tetromino_□
         # from tetrominoes choose random(0-6)
         #random.choice(tetrominoes_list)
+           
+#tetromino_S
+#appear in grid[1][3], grid[1][4], grid[0][4], and grid[0][5] 
+#rotations
+'''
+if self.rotation_num == 0:
+    self.block1_row -= 3
+    self.block2_row -= 1
+    self.block2_column -= 1
+    self.block4_row += 1
+    self.block4_column -= 1
+    #print("rotate1")
+elif self.rotation_num == 1:
+    self.block1_row += 3
+    self.block2_row += 1
+    self.block2_column += 1
+    self.block4_row -= 1
+    self.block4_column += 1
+    #print("rotate2")
+'''
+#tetromino_J
+#appear in grid[0][3], grid[1][3], grid[1][4], and grid[1][5]
+#tetromino_L
+#appear in grid[0][5], grid[1][3], grid[1][4], and grid[1][5]
+#tetromino_T
+#appear in grid[0][4], grid[1][3], grid[1][4], and grid[1][5]
+#tetromino_|
+#appear in grid[0][3], grid[0][4], grid[0][5], and grid[0][6]
+#if self.rotation_num == 0:
+'''
+TEMPLATE:
+if self.rotation_num == 0:
+    self.block1_row += 1
+    self.block1_column -= 3
+    self.block2_row -= 1
+    self.block2_column -= 1
+    self.block3_row -= 1
+    self.block3_column -= 1
+    self.block4_row -= 2
+    self.block4_column -= 1
+    self.rotation_num = 1
+    #print("rotate1")
+elif self.rotation_num == 1:
+    self.block1_row += 1
+    self.block1_column -= 3
+    self.block2_row -= 1
+    self.block2_column -= 1
+    self.block3_row -= 1
+    self.block3_column -= 1
+    self.block4_row -= 2
+    self.block4_column -= 1
+    self.rotation_num = 2
+    #print("rotate2")
+elif self.rotation_num == 2:
+    self.block1_row += 1
+    self.block1_column -= 3
+    self.block2_row -= 1
+    self.block2_column -= 1
+    self.block3_row -= 1
+    self.block3_column -= 1
+    self.block4_row -= 2
+    self.block4_column -= 1
+    self.rotation_num = 3
+    #print("rotate3")
+elif self.rotation_num == 3:
+    self.block1_row += 1
+    self.block1_column -= 3
+    self.block2_row -= 1
+    self.block2_column -= 1
+    self.block3_row -= 1
+    self.block3_column -= 1
+    self.block4_row -= 2
+    self.block4_column -= 1
+    self.rotation_num = 0
+    #print("rotate4")
+'''
+#tetromino_□
+#appear in grid[0][4], grid[0][5], grid[1][4], and grid[1][5]
+#no rotate!
