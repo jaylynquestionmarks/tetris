@@ -10,7 +10,7 @@ import pygame
 from random import *
 import copy
 pygame.init()
-from tetrominoes import Tetromino, Tetromino_z
+from tetrominoes import Tetromino, Tetromino_z, Tetromino_s, Tetromino_j, Tetromino_l
 
 #Screen
 screen = pygame.display.set_mode((1920,1080))
@@ -20,7 +20,7 @@ clock = pygame.time.Clock()
 timer_event = pygame.USEREVENT+1
 pygame.time.set_timer(timer_event, 1000)
 time = 0
-speed = 8
+speed = 5
 
 #Score
 score = 0
@@ -76,10 +76,10 @@ show_grid = [[0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
 #draw_grids
 def draw_grid(screen, show_grid):
     i = 0
-    j = 0
+    j = 13
     for row in show_grid:
         # print(row)
-        j = 0
+        j = 13
         for block in row:
             # print(block)
             if block == 1:
@@ -93,10 +93,10 @@ def draw_grid(screen, show_grid):
 # what is old grid\
 def draw_old_grid(screen, old_grid):
     i = 0
-    j = 0
+    j = 13
     for row in old_grid:
         # print(row)
-        j = 0
+        j = 13
         for block in row:
             # print(block)
             if block == 1:
@@ -113,17 +113,25 @@ def random_piece():
     if r == 1:
         print("generated Z piece")
         return Tetromino_z()
+    if r == 2:
+        print("generated S piece")
+        return Tetromino_s()
+    if r == 3:
+        print("generated J piece")
+        return Tetromino_j()
     else:
-        return Tetromino_z()
+        return Tetromino_l()
 
 #set piece to random piece
 piece = random_piece()
 
 while True:
-    screen.fill('black')
+    screen.fill('white')
+    backdrop = pygame.Rect(648, 0, 504, 1080)
+    pygame.draw.rect(screen, "black", backdrop)
     clock.tick(speed)
     #score text
-    score_text = font.render('SCORE: ' + str(score), True, "white")
+    score_text = font.render('SCORE: ' + str(score), True, "black")
     screen.blit(score_text, (1500, 50))
 
     if clock.get_time() == 100:
@@ -184,8 +192,10 @@ while True:
     for row in old_grid:
         if old_grid.index(row) == 0 and row !=[0, 0, 0, 0, 0, 0, 0, 0, 0, 0]:
             # lose text
-            game_over_text = font.render("GAME OVER  FINAL SCORE: " + str(score), True, "red")
-            screen.blit(game_over_text, (0, 0))
+            game_over_text = font.render("GAME OVER", True, "red")
+            final_score_text = font.render("FINAL SCORE: " + str(score), True, "red")
+            screen.blit(game_over_text, (675, 400))
+            screen.blit(final_score_text, (600, 500))
 
     if score > 0 and score % limit == 0:
         speed += 1
@@ -203,5 +213,3 @@ while True:
 #constantly go down, so row = 0 and then for every speed(??), grid[row][column]=0 and grid[row+1][column]=1
 #L or R would be grid[row][column-1] or grid[row][column+1] (except for @ edge)
 #do i have to make a thing for each rotation for each block?
-#
-
