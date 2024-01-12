@@ -219,5 +219,3 @@ while True:
 #constantly go down, so row = 0 and then for every speed(??), grid[row][column]=0 and grid[row+1][column]=1
 #L or R would be grid[row][column-1] or grid[row][column+1] (except for @ edge)
 #do i have to make a thing for each rotation for each block?
-#
-

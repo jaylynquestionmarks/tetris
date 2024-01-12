@@ -211,27 +211,27 @@ class Tetromino_j(Tetromino):
             show_grid[self.block4_row][self.block4_column] = 0
             # rotate
             if self.rotation_num == 0:
-                self.block1_column += 2
+                self.block1_column += 1
                 self.block2_row -= 1
-                self.block2_column += 1
+                self.block3_column -= 1
                 self.block4_row += 1
-                self.block4_column -= 1
+                self.block4_column -= 2
                 self.rotation_num = 1
                 # print("rotate1")
             elif self.rotation_num == 1:
-                self.block1_row += 2
-                self.block2_row += 1
+                self.block1_row += 1
                 self.block2_column += 1
-                self.block4_row -= 1
+                self.block3_row -= 1
+                self.block4_row -= 2
                 self.block4_column -= 1
                 self.rotation_num = 2
                 # print("rotate2")
             elif self.rotation_num == 2:
-                self.block1_column -= 2
+                self.block1_column -= 1
                 self.block2_row += 1
-                self.block2_column -= 1
+                self.block3_column += 1
                 self.block4_row -= 1
-                self.block4_column += 1
+                self.block4_column += 2
                 self.rotation_num = 3
                 # print("rotate3")
             elif self.rotation_num == 3:
@@ -269,35 +269,36 @@ class Tetromino_l(Tetromino):
             show_grid[self.block4_row][self.block4_column] = 0
             # rotate
             if self.rotation_num == 0:
-                self.block1_row += 2
-                self.block2_row += 1
+                self.block1_row += 1
                 self.block2_column -= 1
-                self.block4_row -= 1
+                self.block3_row -= 1
+                self.block4_row -= 2
                 self.block4_column += 1
                 self.rotation_num = 1
                 # print("rotate1")
             elif self.rotation_num == 1:
-                self.block1_column -= 2
+                self.block1_column -= 1
                 self.block2_row -= 1
-                self.block2_column -= 1
+                self.block3_column += 1
                 self.block4_row += 1
-                self.block4_column += 1
+                self.block4_column += 2
                 self.rotation_num = 2
                 # print("rotate2")
             elif self.rotation_num == 2:
-                self.block1_row -= 2
-                self.block2_row -= 1
+                self.block1_row -= 1
                 self.block2_column += 1
-                self.block4_row += 1
+                self.block3_row += 1
+                self.block4_row += 2
                 self.block4_column -= 1
                 self.rotation_num = 3
                 # print("rotate3")
             elif self.rotation_num == 3:
-                self.block1_column += 2
+                self.block1_column += 1
                 self.block2_row += 1
-                self.block2_column += 1
-                self.block4_row -= 1
-                self.block4_column -= 1
+                self.block3_row -= 1
+                self.block3_column -= 1
+                self.block4_row -= 2
+                self.block4_column -= 2
                 self.rotation_num = 0
                 # print("rotate4")
 
