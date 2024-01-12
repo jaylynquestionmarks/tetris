@@ -1,4 +1,5 @@
 import pygame
+import copy
 
 class Tetromino():
     def __init__(self):
@@ -64,6 +65,11 @@ class Tetromino():
 
     #works but having abstract class(ABC) would catch bugs and typos
     #Multiple Inheritance is generally complicated and :(, stick to single inheritance
+
+    #speed up when hold space (because i dont want to think of the block coordinates rn)
+    def speed_up(self, speed):
+        keys = pygame.key.get_pressed()
+
     def rotate(self):
         pass
 
@@ -134,34 +140,176 @@ class Tetromino_z(Tetromino):
                 self.block4_column += 2
                 self.rotation_num = 0
                 #print("rotate2")
-        #tetromino_5
-        #tetromino_J
-        #tetromino_L
-        #tetromino_T
-        #tetromino_|
-        #tetromino_□
-        # from tetrominoes choose random(0-6)
-        #random.choice(tetrominoes_list)
-           
-#tetromino_S
-#appear in grid[1][3], grid[1][4], grid[0][4], and grid[0][5] 
-#rotations
-'''
-if self.rotation_num == 0:
-    self.block1_row -= 3
-    self.block2_row -= 1
-    self.block2_column -= 1
-    self.block4_row += 1
-    self.block4_column -= 1
-    #print("rotate1")
-elif self.rotation_num == 1:
-    self.block1_row += 3
-    self.block2_row += 1
-    self.block2_column += 1
-    self.block4_row -= 1
-    self.block4_column += 1
-    #print("rotate2")
-'''
+
+# tetromino_S
+class Tetromino_s(Tetromino):
+    def __init__(self):
+        super(Tetromino_s, self).__init__()
+        # appear in grid[1][3], grid[1][4], grid[0][4], and grid[0][5]
+        self.block1_row = 1
+        self.block1_column = 3
+        self.block2_row = 1
+        self.block2_column = 4
+        self.block3_row = 0
+        self.block3_column = 4
+        self.block4_row = 0
+        self.block4_column = 5
+        self.rotation_num = 0
+
+    # whichever block it is it will call that rotate
+    def rotate(self, show_grid):
+        keys = pygame.key.get_pressed()
+        # rotate
+        if keys[pygame.K_r]:
+            # clear the previous position
+            show_grid[self.block1_row][self.block1_column] = 0
+            show_grid[self.block2_row][self.block2_column] = 0
+            show_grid[self.block3_row][self.block3_column] = 0
+            show_grid[self.block4_row][self.block4_column] = 0
+            # rotate
+            if self.rotation_num == 0:
+                self.block1_row -= 2
+                self.block2_row -= 1
+                self.block2_column -= 1
+                self.block4_row += 1
+                self.block4_column -= 1
+                self.rotation_num += 1
+                # print("rotate1")
+            elif self.rotation_num == 1:
+                self.block1_row += 2
+                self.block2_row += 1
+                self.block2_column += 1
+                self.block4_row -= 1
+                self.block4_column += 1
+                self.rotation_num = 0
+                # print("rotate2")
+
+# tetromino_J
+class Tetromino_j(Tetromino):
+    def __init__(self):
+        super(Tetromino_j, self).__init__()
+        #appear in grid[0][3], grid[1][3], grid[1][4], and grid[1][5]
+        self.block1_row = 0
+        self.block1_column = 3
+        self.block2_row = 1
+        self.block2_column = 3
+        self.block3_row = 1
+        self.block3_column = 4
+        self.block4_row = 1
+        self.block4_column = 5
+        self.rotation_num = 0
+
+    # whichever block it is it will call that rotate
+    def rotate(self, show_grid):
+        keys = pygame.key.get_pressed()
+        # rotate
+        if keys[pygame.K_r]:
+            # clear the previous position
+            show_grid[self.block1_row][self.block1_column] = 0
+            show_grid[self.block2_row][self.block2_column] = 0
+            show_grid[self.block3_row][self.block3_column] = 0
+            show_grid[self.block4_row][self.block4_column] = 0
+            # rotate
+            if self.rotation_num == 0:
+                self.block1_column += 2
+                self.block2_row -= 1
+                self.block2_column += 1
+                self.block4_row += 1
+                self.block4_column -= 1
+                self.rotation_num = 1
+                # print("rotate1")
+            elif self.rotation_num == 1:
+                self.block1_row += 2
+                self.block2_row += 1
+                self.block2_column += 1
+                self.block4_row -= 1
+                self.block4_column -= 1
+                self.rotation_num = 2
+                # print("rotate2")
+            elif self.rotation_num == 2:
+                self.block1_column -= 2
+                self.block2_row += 1
+                self.block2_column -= 1
+                self.block4_row -= 1
+                self.block4_column += 1
+                self.rotation_num = 3
+                # print("rotate3")
+            elif self.rotation_num == 3:
+                self.block1_row -= 1
+                self.block2_column -= 1
+                self.block3_row += 1
+                self.block4_row += 2
+                self.block4_column += 1
+                self.rotation_num = 0
+                # print("rotate4")
+
+class Tetromino_l(Tetromino):
+    def __init__(self):
+        super(Tetromino_l, self).__init__()
+        #appear in grid[0][5], grid[1][5], grid[1][4], and grid[1][3]
+        self.block1_row = 0
+        self.block1_column = 5
+        self.block2_row = 1
+        self.block2_column = 5
+        self.block3_row = 1
+        self.block3_column = 4
+        self.block4_row = 1
+        self.block4_column = 3
+        self.rotation_num = 0
+
+    # whichever block it is it will call that rotate
+    def rotate(self, show_grid):
+        keys = pygame.key.get_pressed()
+        # rotate
+        if keys[pygame.K_r]:
+            # clear the previous position
+            show_grid[self.block1_row][self.block1_column] = 0
+            show_grid[self.block2_row][self.block2_column] = 0
+            show_grid[self.block3_row][self.block3_column] = 0
+            show_grid[self.block4_row][self.block4_column] = 0
+            # rotate
+            if self.rotation_num == 0:
+                self.block1_row += 2
+                self.block2_row += 1
+                self.block2_column -= 1
+                self.block4_row -= 1
+                self.block4_column += 1
+                self.rotation_num = 1
+                # print("rotate1")
+            elif self.rotation_num == 1:
+                self.block1_column -= 2
+                self.block2_row -= 1
+                self.block2_column -= 1
+                self.block4_row += 1
+                self.block4_column += 1
+                self.rotation_num = 2
+                # print("rotate2")
+            elif self.rotation_num == 2:
+                self.block1_row -= 2
+                self.block2_row -= 1
+                self.block2_column += 1
+                self.block4_row += 1
+                self.block4_column -= 1
+                self.rotation_num = 3
+                # print("rotate3")
+            elif self.rotation_num == 3:
+                self.block1_column += 2
+                self.block2_row += 1
+                self.block2_column += 1
+                self.block4_row -= 1
+                self.block4_column -= 1
+                self.rotation_num = 0
+                # print("rotate4")
+
+
+#tetromino_T
+#tetromino_|
+#tetromino_□
+# from tetrominoes choose random(0-6)
+#random.choice(tetrominoes_list)
+
+
+
 #tetromino_J
 #appear in grid[0][3], grid[1][3], grid[1][4], and grid[1][5]
 #tetromino_L
