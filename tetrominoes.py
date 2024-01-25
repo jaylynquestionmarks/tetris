@@ -24,7 +24,7 @@ class Tetromino():
         show_grid[self.block4_row][self.block4_column] = 1
         return show_grid
 
-    def movement(self, old_grid, show_grid):
+    def movement(self, old_grid, show_grid, speed):
         keys = pygame.key.get_pressed()
         if keys[pygame.K_LEFT]:
             # left edge
@@ -62,6 +62,23 @@ class Tetromino():
                     self.block3_column += 1
                     self.block4_column += 1
 
+        if keys[pygame.K_UP]:
+            if old_grid[self.block1_row][self.block1_column + 1] != 1 and old_grid[self.block2_row][self.block2_column + 1] != 1 and old_grid[self.block3_row][self.block3_column + 1] != 1 and old_grid[self.block4_row][self.block4_column + 1] != 1:
+                # clear the previous position
+                show_grid[self.block1_row][self.block1_column] = 0
+                show_grid[self.block2_row][self.block2_column] = 0
+                show_grid[self.block3_row][self.block3_column] = 0
+                show_grid[self.block4_row][self.block4_column] = 0
+                #go downn
+                self.block1_row += 1
+                self.block2_row += 1
+                self.block3_row += 1
+                self.block4_row += 1
+
+        if keys[pygame.K_SPACE]:
+            #change while
+            while self.can_move == True:
+                speed = 100
 
     #works but having abstract class(ABC) would catch bugs and typos
     #Multiple Inheritance is generally complicated and :(, stick to single inheritance
@@ -184,7 +201,8 @@ class Tetromino_s(Tetromino):
                 self.rotation_num = 0
                 # print("rotate2")
 
-# tetromino_J
+#tetromino_J
+#appear in grid[0][3], grid[1][3], grid[1][4], and grid[1][5]
 class Tetromino_j(Tetromino):
     def __init__(self):
         super(Tetromino_j, self).__init__()
@@ -242,7 +260,8 @@ class Tetromino_j(Tetromino):
                 self.block4_column += 1
                 self.rotation_num = 0
                 # print("rotate4")
-
+#tetromino_L
+#appear in grid[0][5], grid[1][3], grid[1][4], and grid[1][5]
 class Tetromino_l(Tetromino):
     def __init__(self):
         super(Tetromino_l, self).__init__()
@@ -302,23 +321,152 @@ class Tetromino_l(Tetromino):
                 self.rotation_num = 0
                 # print("rotate4")
 
-
-#tetromino_T
-#tetromino_|
-#tetromino_□
-# from tetrominoes choose random(0-6)
-#random.choice(tetrominoes_list)
-
-
-
-#tetromino_J
-#appear in grid[0][3], grid[1][3], grid[1][4], and grid[1][5]
-#tetromino_L
-#appear in grid[0][5], grid[1][3], grid[1][4], and grid[1][5]
 #tetromino_T
 #appear in grid[0][4], grid[1][3], grid[1][4], and grid[1][5]
+class Tetromino_t(Tetromino):
+    def __init__(self):
+        super(Tetromino_t, self).__init__()
+        #appear in grid[0][5], grid[1][5], grid[1][4], and grid[1][3]
+        self.block1_row = 0
+        self.block1_column = 4
+        self.block2_row = 1
+        self.block2_column = 3
+        self.block3_row = 1
+        self.block3_column = 4
+        self.block4_row = 1
+        self.block4_column = 5
+        self.rotation_num = 0
+
+    # whichever block it is it will call that rotate
+    def rotate(self, show_grid):
+        keys = pygame.key.get_pressed()
+        # rotate
+        if keys[pygame.K_r]:
+            # clear the previous position
+            show_grid[self.block1_row][self.block1_column] = 0
+            show_grid[self.block2_row][self.block2_column] = 0
+            show_grid[self.block3_row][self.block3_column] = 0
+            show_grid[self.block4_row][self.block4_column] = 0
+            # rotate
+            if self.rotation_num == 0:
+                self.block1_row += 1
+                self.block1_column += 1
+                self.block2_row -= 1
+                self.block2_column += 1
+                self.block4_row += 1
+                self.block4_column -= 1
+                self.rotation_num = 1
+                # print("rotate1")
+            elif self.rotation_num == 1:
+                self.block1_row += 1
+                self.block1_column -= 1
+                self.block2_row += 1
+                self.block2_column += 1
+                self.block4_row -= 1
+                self.block4_column -= 1
+                self.rotation_num = 2
+                # print("rotate2")
+            elif self.rotation_num == 2:
+                self.block1_row -= 1
+                self.block1_column -= 1
+                self.block2_row += 1
+                self.block2_column -= 1
+                self.block4_row -= 1
+                self.block4_column += 1
+                self.rotation_num = 3
+                # print("rotate3")
+            elif self.rotation_num == 3:
+                self.block1_row -= 1
+                self.block1_column += 1
+                self.block2_row -= 1
+                self.block2_column -= 1
+                self.block4_row += 1
+                self.block4_column += 1
+                self.rotation_num = 0
+                # print("rotate4")
+
 #tetromino_|
 #appear in grid[0][3], grid[0][4], grid[0][5], and grid[0][6]
+class Tetromino_line(Tetromino):
+    def __init__(self):
+        super(Tetromino_line, self).__init__()
+        #appear in grid[0][5], grid[1][5], grid[1][4], and grid[1][3]
+        self.block1_row = 0
+        self.block1_column = 2
+        self.block2_row = 0
+        self.block2_column = 3
+        self.block3_row = 0
+        self.block3_column = 4
+        self.block4_row = 0
+        self.block4_column = 5
+        self.rotation_num = 0
+
+    # whichever block it is it will call that rotate
+    def rotate(self, show_grid):
+        keys = pygame.key.get_pressed()
+        # rotate
+        if keys[pygame.K_r]:
+            # clear the previous position
+            show_grid[self.block1_row][self.block1_column] = 0
+            show_grid[self.block2_row][self.block2_column] = 0
+            show_grid[self.block3_row][self.block3_column] = 0
+            show_grid[self.block4_row][self.block4_column] = 0
+            # rotate
+            if self.rotation_num == 0:
+                self.block1_row -= 1
+                self.block1_column += 1
+                self.block3_row += 1
+                self.block3_column -= 1
+                self.block4_row += 2
+                self.block4_column -= 2
+                self.rotation_num = 1
+                # print("rotate1")
+            elif self.rotation_num == 1:
+                self.block1_row += 1
+                self.block1_column -= 1
+                self.block3_row -= 1
+                self.block3_column += 1
+                self.block4_row -= 2
+                self.block4_column += 2
+                self.rotation_num = 2
+                # print("rotate2")
+            elif self.rotation_num == 2:
+                self.block1_row += 2
+                self.block1_column += 2
+                self.block2_row += 1
+                self.block2_column += 1
+                self.block4_row -= 1
+                self.block4_column -= 1
+                self.rotation_num = 3
+                # print("rotate3")
+            elif self.rotation_num == 3:
+                self.block1_row -= 2
+                self.block1_column -= 2
+                self.block2_row -= 1
+                self.block2_column -= 1
+                self.block4_row += 1
+                self.block4_column += 1
+                self.rotation_num = 0
+                # print("rotate4")
+
+#tetromino_□
+#appear in grid[0][4], grid[0][5], grid[1][4], and grid[1][5]
+#no rotate!
+class Tetromino_sq(Tetromino):
+    def __init__(self):
+        super(Tetromino_sq, self).__init__()
+        #appear in grid[0][5], grid[1][5], grid[1][4], and grid[1][3]
+        self.block1_row = 0
+        self.block1_column = 4
+        self.block2_row = 1
+        self.block2_column = 4
+        self.block3_row = 0
+        self.block3_column = 5
+        self.block4_row = 1
+        self.block4_column = 5
+    def rotate(self, show_grid):
+        pass
+
 #if self.rotation_num == 0:
 '''
 TEMPLATE:
@@ -367,6 +515,4 @@ elif self.rotation_num == 3:
     self.rotation_num = 0
     #print("rotate4")
 '''
-#tetromino_□
-#appear in grid[0][4], grid[0][5], grid[1][4], and grid[1][5]
-#no rotate!
+

@@ -10,7 +10,7 @@ import pygame
 from random import *
 import copy
 pygame.init()
-from tetrominoes import Tetromino, Tetromino_z, Tetromino_s, Tetromino_j, Tetromino_l
+from tetrominoes import *
 
 #Screen
 screen = pygame.display.set_mode((1920,1080))
@@ -110,22 +110,31 @@ def draw_old_grid(screen, old_grid):
 #generally use clock tick as seed to generate random number(except in security)
 def random_piece(piece_color):
     #pick random
-    r = randrange(1,6)
-    if r == 1:
+    r = randrange(0,6)
+    if r == 0:
         piece_color = "red"
         print("generated Z piece")
         return Tetromino_z(), piece_color
-    if r == 2:
+    if r == 1:
         piece_color = "lime"
         print("generated S piece")
         return Tetromino_s(), piece_color
-    if r == 3:
+    if r == 2:
         piece_color = "blue"
         print("generated J piece")
         return Tetromino_j(), piece_color
-    else:
+    if r == 3:
         piece_color = "orange"
         return Tetromino_l(), piece_color
+    if r == 4:
+        piece_color = "purple"
+        return Tetromino_t(), piece_color
+    if r == 5:
+      piece_color = "cyan"
+      return Tetromino_line(), piece_color
+    if r == 6:
+        piece_color = "yellow"
+        return Tetromino_sq(), piece_color
 
 #set piece to random piece
 piece, piece_color = random_piece(piece_color)
@@ -139,17 +148,15 @@ while True:
     score_text = font.render('SCORE: ' + str(score), True, "black")
     screen.blit(score_text, (1500, 50))
 
-    if clock.get_time() == 100:
-        print("time = 100")
-
     for event in pygame.event.get():
         if event.type == timer_event:
+            print("timer + 1")
             time += 1
 
         if event.type == pygame.QUIT:
             exit()
 
-    piece.movement(old_grid, show_grid)
+    piece.movement(old_grid, show_grid, speed)
     piece.rotate(show_grid)
     piece.borders(old_grid, show_grid)
     piece.timed_mov(show_grid, time)
